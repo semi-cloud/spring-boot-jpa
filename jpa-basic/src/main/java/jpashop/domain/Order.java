@@ -1,13 +1,13 @@
 package jpashop.domain;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Order {
+@Table(name = "ORDERS")
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue

@@ -6,7 +6,7 @@ import java.util.List;
 
 //편리하게 조회를 위해 양방향 추가(list 없이 단방향 설계만으로도 가능!)
 @Entity
-public class Member {
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "member_id")
