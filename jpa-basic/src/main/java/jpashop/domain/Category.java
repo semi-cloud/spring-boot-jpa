@@ -13,11 +13,11 @@ public class Category extends BaseEntity{
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent")   //default lazy
     private List<Category> child = new ArrayList<>();
 
     //다대다 관계
