@@ -144,4 +144,24 @@ class MemberRepositoryTest {
        }
 
     }
+
+    @Test
+    public void queryHint(){
+        //given
+        memberRepository.save(new Member("member1", 10));
+        em.flush();
+        em.clear();
+
+        //when
+        //읽을때 성능 최적화를 하여 스냅샷을 만들지 않음 => 변경 감지 체킹 X
+        Member member = memberRepository.findReadOnlyByUsername("member1");
+        member.setUsername("member2");
+
+        em.flush(); //Update Query 실행X
+    }
+
+    @Test
+    public void callCustom(){
+        List<Member> result = memberRepository.findMemberCustom();
+    }
 }
