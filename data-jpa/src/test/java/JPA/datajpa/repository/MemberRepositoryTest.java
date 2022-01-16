@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,6 +28,7 @@ class MemberRepositoryTest {
     //spring data jpa 가 인터체이스 구현체를 만들어서 주입시켜줌, 프록시 객체
     @Autowired MemberRepository memberRepository;
     @Autowired TeamRepository teamRepository;
+    @PersistenceContext EntityManager em;
 
     @Test
     public void testMember(){
@@ -111,6 +114,34 @@ class MemberRepositoryTest {
         assertThat(page.getTotalPages()).isEqualTo(2);    //전체 페이지 수
         assertThat(page.isFirst()).isTrue();         //첫번째 페이지 여부
         assertThat(page.hasNext()).isTrue();        //다음 페이지 존재 여부
+
+    }
+
+    @Test
+    public void findMemberLazy(){
+
+        //given
+        //member1 -> teamA
+        //member2 -> teamB
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        memberRepository.save(new Member("member1", 10, teamA));
+        memberRepository.save(new Member("member2", 20, teamB));
+
+        em.flush();
+        em.clear();
+
+        //N + 1
+        //when
+        List<Member> members = memberRepository.findAll();   //select member : 1
+
+        //then
+        for (Member member : members) {
+            System.out.println("member = " + member.getUsername());
+            System.out.println("member.team = " + member.getTeam().getName());  //프록시 초기화 : N
+       }
 
     }
 }
