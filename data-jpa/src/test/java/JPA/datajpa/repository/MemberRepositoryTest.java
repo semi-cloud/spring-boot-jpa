@@ -68,6 +68,21 @@ class MemberRepositoryTest {
         }
     }
 
+    @Test
+    public void bulkUpdate() throws Exception {
+        //given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+        //when
+        int resultCount = memberRepository.bulkAgePlus(20);
+        //then
+        assertThat(resultCount).isEqualTo(3);
+    }
+
+    @Test
     public void paging(){
         //given
         memberRepository.save(new Member("member1", 10));
@@ -93,7 +108,7 @@ class MemberRepositoryTest {
         assertThat(content.size()).isEqualTo(3);     //가져온 데이터 개수
         assertThat(page.getTotalElements()).isEqualTo(5);   //총 데이터 개수(total count)
         assertThat(page.getNumber()).isEqualTo(0);          //현재 페이지 번호
-        assertThat(page.getTotalElements()).isEqualTo(2);    //전체 페이지 수
+        assertThat(page.getTotalPages()).isEqualTo(2);    //전체 페이지 수
         assertThat(page.isFirst()).isTrue();         //첫번째 페이지 여부
         assertThat(page.hasNext()).isTrue();        //다음 페이지 존재 여부
 
