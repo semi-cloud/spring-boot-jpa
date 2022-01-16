@@ -2,7 +2,6 @@ package JPA.datajpa.repository;
 
 import JPA.datajpa.entity.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.EntityManager;
 import java.util.List;
