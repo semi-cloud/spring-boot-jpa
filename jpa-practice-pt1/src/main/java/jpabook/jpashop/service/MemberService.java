@@ -19,7 +19,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     //회원 가입
-    @Transactional  //기본값이 readOnly = false
+    @Transactional
     public Long join(Member member){
 
         validateDuplicateMember(member);  //중복 회원 검증
@@ -44,4 +44,9 @@ public class MemberService {
         return memberRepository.findOne(memberId);
     }
 
+    @Transactional
+    public void update(Long id, String name){
+        Member member = memberRepository.findOne(id);   //영속 상태
+        member.setName(name);
+    }
 }
