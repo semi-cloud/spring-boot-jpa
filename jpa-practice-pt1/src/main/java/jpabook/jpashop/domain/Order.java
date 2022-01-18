@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ public class Order {
 
     //cascade : persist(order)만 해도 DB에 저장.(원래 엔티티 각각 모두 persist 해야해)
     //persist(orderItemA) persist(orderItemB)..
+    //@BatchSize(size = 100)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 

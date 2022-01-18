@@ -76,10 +76,11 @@ public class OrderSimpleController {
     /**
      JPA 에서 DTO 바로 조회
      */
-    @GetMapping("ap4/v3/simple-orders")
+    @GetMapping("api/v4/simple-orders")
     public List<OrderSimpleQueryDto> ordersV4(){
         return orderRepository.findOrderDtos();
     }
+
 
     @Data
     static class SimpleOrderDto {
@@ -98,6 +99,9 @@ public class OrderSimpleController {
             address = order.getDelivery().getAddress();
         }
     }
+
+
+
 
 }
 

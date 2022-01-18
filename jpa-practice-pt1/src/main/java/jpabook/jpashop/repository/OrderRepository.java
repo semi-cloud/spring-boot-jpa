@@ -86,11 +86,22 @@ public class OrderRepository {
 
     }
 
-    //페치 조인
     public List<Order> findAllWithMemberDelivery() {
+        return em.createQuery("select o from Order o" +
+                " join fetch o.member m" +
+                " join fetch o.delivery d", Order.class)
+                .getResultList();
+    }
+
+
+    //페치 조인
+    //join fetch 지워도 Batch size 때문에 인쿼리로 한번에 데이터가 가져와짐
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
         return em.createQuery("select o from Order o" +
                         " join fetch o.member m" +
                         " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
                 .getResultList();
     }
 
@@ -100,6 +111,19 @@ public class OrderRepository {
                 "select new jpabook.jpashop.repository.OrderSimpleQueryDto(o.id, m.name, o.orderDate, o.status, d.address) from Order o " +
                 "join o.member m " +
                 "join o.delivery d", OrderSimpleQueryDto.class)
+                .getResultList();
+    }
+
+    //1 : N에서 1이 N만큼 데이터 뻥튀기(Order -> OrderItem)
+    //DB 쿼리에서는 distinct 불가능(데이터가 완전히 같지 않기 때문에)
+    //JPA 자체적으로 Order 같은 id 값이면 중복을 제거하고 컬렉션에 담아줌
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                "select distinct o from Order o " +
+                        "join fetch o.member m " +
+                        "join fetch o.delivery d " +
+                        "join fetch o.orderItems oi " +
+                        "join fetch oi.item i", Order.class)
                 .getResultList();
     }
 }

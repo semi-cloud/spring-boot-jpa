@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(columnDefinition = "dtype")
+@DiscriminatorColumn(name = "dtype")
 @Getter @Setter
 public abstract class Item {  //상속 관계 매핑
 
