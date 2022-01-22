@@ -3,7 +3,6 @@ package JPA.querydsl.repository;
 import JPA.querydsl.dto.MemberSearchCondition;
 import JPA.querydsl.dto.MemberTeamDto;
 import JPA.querydsl.dto.QMemberTeamDto;
-import JPA.querydsl.entity.Member;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
