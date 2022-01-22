@@ -7,6 +7,8 @@ import JPA.querydsl.entity.Team;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -40,14 +42,15 @@ public class MemberRepositoryTest {
         em.persist(member4);
 
         MemberSearchCondition condition  = new MemberSearchCondition();
-        condition.setAgeGoe(35);
-        condition.setAgeLoe(40);
-        condition.setTeamName("teamB");
+        PageRequest pageRequest = PageRequest.of(0, 3);
+
         //만약 조건이 모두 null 이면 => 모든 데이터를 다 가져옴(기본 조건 필수)
+        Page<MemberTeamDto> result = memberRepository.searchPageSimple(condition, pageRequest);
 
-        List<MemberTeamDto> result = memberRepository.search(condition);
-
-        assertThat(result).extracting("username").containsExactly("member4");
+        assertThat(result.getSize()).isEqualTo(3);
+        assertThat(result.getContent()).extracting("username").containsExactly("member1", "member2", "member3");
+        //List<MemberTeamDto> result = memberRepository.search(condition);
+        //assertThat(result).extracting("username").containsExactly("member4");
     }
 
 }

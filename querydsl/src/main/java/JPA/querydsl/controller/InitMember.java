@@ -23,6 +23,7 @@ public class InitMember {
         initMemberService.init();
     }
 
+    @Component
     static class InitMemberService{
         @PersistenceContext
         EntityManager em;
@@ -31,6 +32,8 @@ public class InitMember {
         public void init(){
             Team teamA = new Team("teamA");
             Team teamB = new Team("teamB");
+            em.persist(teamA);
+            em.persist(teamB);
 
             for (int i = 0; i < 100; i++) {
                 Team selectedTeam = i % 2 == 0 ? teamA : teamB;
